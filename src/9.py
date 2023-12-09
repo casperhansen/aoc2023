@@ -8,7 +8,7 @@ def loadfile(fname):
         return lines
 
 
-def process_reading(reading: list[int], part_one: bool = True) -> int:
+def process_reading(reading: list[int]) -> int:
     readings = [reading]
     while True:
         last_reading = readings[-1]
@@ -17,19 +17,9 @@ def process_reading(reading: list[int], part_one: bool = True) -> int:
         if all([v == 0 for v in next_reading]):
             break
     for i in range(1, len(readings)):
-        if part_one:
-            readings[len(readings) - i - 1].append(
-                readings[len(readings) - i - 1][-1] + readings[len(readings) - i][-1]
-            )
-        else:
-            readings[len(readings) - i - 1] = [
-                readings[len(readings) - i - 1][0] - readings[len(readings) - i][0]
-            ] + readings[len(readings) - i - 1]
+        readings[len(readings) - i - 1].append(readings[len(readings) - i - 1][-1] + readings[len(readings) - i][-1])
 
-    if part_one:
-        predictions = [readings[i][-1] for i in range(len(readings))]
-    else:
-        predictions = [readings[i][0] for i in range(len(readings))]
+    predictions = [readings[i][-1] for i in range(len(readings))]
     return predictions[0]
 
 
@@ -39,13 +29,12 @@ def main():
 
     preds = []
     for reading in copy.deepcopy(readings):
-        preds.append(process_reading(reading, part_one=True))
-
+        preds.append(process_reading(reading))
     print(sum(preds))
+
     preds = []
     for reading in copy.deepcopy(readings):
-        preds.append(process_reading(reading, part_one=False))
-
+        preds.append(process_reading(reading[::-1]))
     print(sum(preds))
 
 
